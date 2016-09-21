@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Player.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate>
+
 
 
 @end

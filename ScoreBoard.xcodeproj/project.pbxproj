@@ -12,7 +12,9 @@
 		49BA10EA1D8F288700C21731 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA10E91D8F288700C21731 /* ViewController.m */; };
 		49BA10ED1D8F288700C21731 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49BA10EB1D8F288700C21731 /* Main.storyboard */; };
 		49BA10EF1D8F288700C21731 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49BA10EE1D8F288700C21731 /* Assets.xcassets */; };
-		49BA10F21D8F288700C21731 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49BA10F01D8F288700C21731 /* LaunchScreen.storyboard */; };
+		49BA10FB1D8F439B00C21731 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA10FA1D8F439B00C21731 /* Player.m */; };
+		49BA10FF1D90424A00C21731 /* Goal.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA10FE1D90424A00C21731 /* Goal.m */; };
+		49BA11011D90A18900C21731 /* PickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA11001D90A18900C21731 /* PickerController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,8 +26,13 @@
 		49BA10E91D8F288700C21731 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		49BA10EC1D8F288700C21731 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		49BA10EE1D8F288700C21731 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		49BA10F11D8F288700C21731 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49BA10F31D8F288700C21731 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49BA10FA1D8F439B00C21731 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
+		49BA10FC1D8F47E700C21731 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		49BA10FD1D9041BA00C21731 /* Goal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Goal.h; sourceTree = "<group>"; };
+		49BA10FE1D90424A00C21731 /* Goal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Goal.m; sourceTree = "<group>"; };
+		49BA11001D90A18900C21731 /* PickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerController.m; sourceTree = "<group>"; };
+		49BA11021D90A19600C21731 /* PickerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,14 +66,19 @@
 			isa = PBXGroup;
 			children = (
 				49BA10E51D8F288700C21731 /* AppDelegate.h */,
+				49BA10FC1D8F47E700C21731 /* Player.h */,
 				49BA10E61D8F288700C21731 /* AppDelegate.m */,
 				49BA10E81D8F288700C21731 /* ViewController.h */,
 				49BA10E91D8F288700C21731 /* ViewController.m */,
 				49BA10EB1D8F288700C21731 /* Main.storyboard */,
 				49BA10EE1D8F288700C21731 /* Assets.xcassets */,
-				49BA10F01D8F288700C21731 /* LaunchScreen.storyboard */,
 				49BA10F31D8F288700C21731 /* Info.plist */,
 				49BA10E21D8F288700C21731 /* Supporting Files */,
+				49BA10FA1D8F439B00C21731 /* Player.m */,
+				49BA10FD1D9041BA00C21731 /* Goal.h */,
+				49BA10FE1D90424A00C21731 /* Goal.m */,
+				49BA11001D90A18900C21731 /* PickerController.m */,
+				49BA11021D90A19600C21731 /* PickerController.h */,
 			);
 			path = ScoreBoard;
 			sourceTree = "<group>";
@@ -136,7 +148,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49BA10F21D8F288700C21731 /* LaunchScreen.storyboard in Resources */,
 				49BA10EF1D8F288700C21731 /* Assets.xcassets in Resources */,
 				49BA10ED1D8F288700C21731 /* Main.storyboard in Resources */,
 			);
@@ -149,7 +160,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49BA10FF1D90424A00C21731 /* Goal.m in Sources */,
+				49BA10FB1D8F439B00C21731 /* Player.m in Sources */,
 				49BA10EA1D8F288700C21731 /* ViewController.m in Sources */,
+				49BA11011D90A18900C21731 /* PickerController.m in Sources */,
 				49BA10E71D8F288700C21731 /* AppDelegate.m in Sources */,
 				49BA10E41D8F288700C21731 /* main.m in Sources */,
 			);
@@ -164,14 +178,6 @@
 				49BA10EC1D8F288700C21731 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		49BA10F01D8F288700C21731 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				49BA10F11D8F288700C21731 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -265,6 +271,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = ScoreBoard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ets.ScoreBoard;
@@ -276,6 +283,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = ScoreBoard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ets.ScoreBoard;
@@ -302,6 +310,7 @@
 				49BA10F81D8F288700C21731 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
