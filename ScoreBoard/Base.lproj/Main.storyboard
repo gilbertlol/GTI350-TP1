@@ -111,6 +111,7 @@
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
                                     <action selector="team1PlayerValueChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="Zif-Gi-tzS"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Zt4-UJ-3uP"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Num" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zMm-kH-o5u">
@@ -119,6 +120,7 @@
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
                                     <action selector="team2PlayerValueChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="OSX-fu-TvR"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Qtv-hT-Iqp"/>
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Periode : " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vFH-D3-jre">
@@ -187,6 +189,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssE-tV-ysP">
                                 <rect key="frame" x="479" y="514" width="240" height="30"/>
                                 <state key="normal" title="Ajouter But"/>
+                                <connections>
+                                    <action selector="addGoalPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="msv-Sy-NXN"/>
+                                </connections>
                             </button>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RA4-Ta-MT5">
                                 <rect key="frame" x="649" y="455" width="70" height="43"/>
@@ -198,6 +203,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UCV-iv-Luf">
                                 <rect key="frame" x="268" y="69" width="203" height="30"/>
                                 <state key="normal" title="Fin de la partie"/>
+                                <connections>
+                                    <action selector="endGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="arU-lm-78N"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ka-NB-HME">
                                 <rect key="frame" x="268" y="107" width="203" height="30"/>

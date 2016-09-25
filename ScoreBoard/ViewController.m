@@ -96,7 +96,10 @@ NSMutableArray<Player*>* team2A2PickerArr;
 }
 
 - (void)logGoalScored:(NSString*)scorer assist:(NSString*)assist quarter:(NSString*)quarter team:(NSString*)team {
-    NSString* text = [NSString stringWithFormat:@"Période: %@,	%@	- But :	%@,		Aides :	%@.\n", quarter, team, scorer, assist];
+    if([assist  isEqual: @""]) {
+        assist = @"Sans aide";
+    }
+    NSString* text = [NSString stringWithFormat:@"Période: %@, %@ - But: %@, Aides: %@.\n", quarter, team, scorer, assist];
     _logConsoleTxt.text = [_logConsoleTxt.text stringByAppendingString:text];
 }
 
@@ -259,40 +262,49 @@ goalValueChanged:(id)sender {
         int goalPosition = [_equipe1GoalPicker selectedRowInComponent:0] - 1;
         int assist1Position = [_equipe1Assist1Picker selectedRowInComponent:0] - 1;
         int assist2Position = [_equipe1Assist2Picker selectedRowInComponent:0] - 1;
+
         Player* player = [team1Players objectForKey:team1GPickerArr[goalPosition].number.stringValue];
         player.goal++;
+        NSString* scorerName = player.lastName;
+        NSMutableString* assistNames = [[NSMutableString alloc] init];
         if(assist1Position >= 0) {
             player = [team1Players objectForKey:team1A1PickerArr[assist1Position].number.stringValue];
             player.assist++;
+            [assistNames appendString:player.name];
         }
         if(assist2Position >= 0) {
             player = [team1Players objectForKey:team1A2PickerArr[assist2Position].number.stringValue];
             player.assist++;
+            [assistNames appendFormat:@", %@", player.name];
         }
         [_equipe1Tbl reloadData];
         [_equipe1GoalPicker selectRow:0 inComponent:0 animated:YES];
         [team1A1PickerArr removeAllObjects];
         [team1A2PickerArr removeAllObjects];
-        /*[self logGoalScored:team1GPickerArr[goalPosition].lastName assist:[NSString stringWithFormat:@"%@, %@", team1A1PickerArr[assist1Position].lastName, team1A2PickerArr[assist2Position].lastName] quarter:_periodeLbl.text team:_equipe1Txt.text];*/
+        [self logGoalScored:scorerName assist:[NSString stringWithFormat:@"%@", assistNames] quarter:_periodeLbl.text team:_equipe1Txt.text];
     } else {
         int goalPosition = [_equipe2GoalPicker selectedRowInComponent:0] - 1;
         int assist1Position = [_equipe2Assist1Picker selectedRowInComponent:0] - 1;
         int assist2Position = [_equipe2Assist2Picker selectedRowInComponent:0] - 1;
         Player* player = [team2Players objectForKey:team2GPickerArr[goalPosition].number.stringValue];
         player.goal++;
+        NSString* scorerName = player.name;
+        NSMutableString* assistNames = [[NSMutableString alloc] init];
         if(assist1Position >= 0) {
             player = [team2Players objectForKey:team2A1PickerArr[assist1Position].number.stringValue];
             player.assist++;
+            [assistNames appendString:player.name];
         }
         if(assist2Position >= 0) {
             player = [team2Players objectForKey:team2A2PickerArr[assist2Position].number.stringValue];
             player.assist++;
+            [assistNames appendFormat:@", %@", player.name];
         }
         [_equipe2Tbl reloadData];
         [_equipe2GoalPicker selectRow:0 inComponent:0 animated:YES];
         [team2A1PickerArr removeAllObjects];
         [team2A2PickerArr removeAllObjects];
-        /*[self logGoalScored:team2GPickerArr[goalPosition].lastName assist:[NSString stringWithFormat:@"%@, %@", team2A1PickerArr[assist1Position].lastName, team2A2PickerArr[assist2Position].lastName] quarter:_periodeLbl.text team:_equipe2Txt.text];*/
+        [self logGoalScored:scorerName assist:[NSString stringWithFormat:@"%@", assistNames] quarter:_periodeLbl.text team:_equipe2Txt.text];
     }
     [self reloadGoals];
     [self reloadPicker];
@@ -431,14 +443,14 @@ goalValueChanged:(id)sender {
     }
     _equipe2ScoreLbl.text = [NSString stringWithFormat:@"%d",goals];
 }
+- (IBAction)endGame:(id)sender {
+    [self calculateStars];
+}
 
 -(void) calculateStars {
     Player* player1 = nil;
     Player* player2 = nil;
     Player* player3 = nil;
-    Player* player4 = nil;
-    Player* player5 = nil;
-    Player* player6 = nil;
     
     for(Player* p in team1Players.allValues) {
         if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
@@ -448,27 +460,27 @@ goalValueChanged:(id)sender {
         } else if(player2.getScoreValue < p.getScoreValue) {
             player3 = player2;
             player2 = p;
-        } else if(player6.getScoreValue < p.getScoreValue) {
+        } else if(player3.getScoreValue < p.getScoreValue) {
             player3 = p;
         }
     }
     
     for(Player* p in team2Players.allValues) {
-        if(player4 == nil || player4.getScoreValue < p.getScoreValue) {
-            player6 = player5;
-            player5 = player4;
-            player4 = p;
-        } else if(player5.getScoreValue < p.getScoreValue) {
-            player6 = player5;
-            player5 = p;
-        } else if(player6.getScoreValue < p.getScoreValue) {
-            player6 = p;
+        if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
+            player3 = player2;
+            player2 = player1;
+            player1 = p;
+        } else if(player2.getScoreValue < p.getScoreValue) {
+            player3 = player2;
+            player2 = p;
+        } else if(player3.getScoreValue < p.getScoreValue) {
+            player3 = p;
         }
     }
     
-    NSString* star1 = @"";
-    NSString* star2 = @"";
-    NSString* star3 = @"";
+    NSString* star1 = [NSString stringWithFormat:@"1 - %@, %dB %dP", player1.name, player1.goal, player1.assist];
+    NSString* star2 = [NSString stringWithFormat:@"2 - %@, %dB %dP", player2.name, player2.goal, player2.assist];
+    NSString* star3 = [NSString stringWithFormat:@"3 - %@, %dB %dP", player3.name, player3.goal, player3.assist];
     
     NSString* starsText = [NSString stringWithFormat:@"Les trois etoiles sont\n\n1 : %@\n2 : %@\n3 : %@", star1, star2, star3];
     
@@ -516,6 +528,13 @@ goalValueChanged:(id)sender {
     [self reloadPicker];
     [_equipe1Tbl reloadData];
     [_equipe2Tbl reloadData];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string  {
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+    NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+    return (([string isEqualToString:filtered])&&(newLength < 3));
 }
 
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Player.h"
 
-@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate>
 
 
 
