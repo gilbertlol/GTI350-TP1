@@ -58,14 +58,17 @@ NSMutableArray<Player*>* team2A2PickerArr;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     team1Players = [[NSMutableDictionary alloc] init];
     team1Goals = [[NSMutableArray alloc] init];
+    
     team2Players = [[NSMutableDictionary alloc] init];
     team2Goals = [[NSMutableArray alloc] init];
     
     team1GPickerArr = [[NSMutableArray alloc] init];
     team1A1PickerArr = [[NSMutableArray alloc] init];
     team1A2PickerArr = [[NSMutableArray alloc] init];
+    
     team2GPickerArr = [[NSMutableArray alloc] init];
     team2A1PickerArr = [[NSMutableArray alloc] init];
     team2A2PickerArr = [[NSMutableArray alloc] init];
@@ -259,9 +262,9 @@ goalValueChanged:(id)sender {
 
 - (IBAction)addGoalPressed:(id)sender {
     if(sender == _equipe1AddGoalBtn) {
-        int goalPosition = [_equipe1GoalPicker selectedRowInComponent:0] - 1;
-        int assist1Position = [_equipe1Assist1Picker selectedRowInComponent:0] - 1;
-        int assist2Position = [_equipe1Assist2Picker selectedRowInComponent:0] - 1;
+        int goalPosition = (int) [_equipe1GoalPicker selectedRowInComponent:0] - 1;
+        int assist1Position = (int) [_equipe1Assist1Picker selectedRowInComponent:0] - 1;
+        int assist2Position = (int) [_equipe1Assist2Picker selectedRowInComponent:0] - 1;
 
         Player* player = [team1Players objectForKey:team1GPickerArr[goalPosition].number.stringValue];
         player.goal++;
@@ -283,9 +286,9 @@ goalValueChanged:(id)sender {
         [team1A2PickerArr removeAllObjects];
         [self logGoalScored:scorerName assist:[NSString stringWithFormat:@"%@", assistNames] quarter:_periodeLbl.text team:_equipe1Txt.text];
     } else {
-        int goalPosition = [_equipe2GoalPicker selectedRowInComponent:0] - 1;
-        int assist1Position = [_equipe2Assist1Picker selectedRowInComponent:0] - 1;
-        int assist2Position = [_equipe2Assist2Picker selectedRowInComponent:0] - 1;
+        int goalPosition = (int) [_equipe2GoalPicker selectedRowInComponent:0] - 1;
+        int assist1Position = (int) [_equipe2Assist1Picker selectedRowInComponent:0] - 1;
+        int assist2Position = (int) [_equipe2Assist2Picker selectedRowInComponent:0] - 1;
         Player* player = [team2Players objectForKey:team2GPickerArr[goalPosition].number.stringValue];
         player.goal++;
         NSString* scorerName = player.name;
@@ -313,24 +316,24 @@ goalValueChanged:(id)sender {
 // The number of columns of data
 - (int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 1;
+    return (int) 1;
 }
 
 // The number of rows of data
 - (int)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if(pickerView == _equipe1GoalPicker) {
-        return team1GPickerArr.count + 1;
+        return (int) team1GPickerArr.count + 1;
     } else if(pickerView == _equipe1Assist1Picker) {
-        return team1A1PickerArr.count + 1;
+        return (int) team1A1PickerArr.count + 1;
     } else if(pickerView == _equipe1Assist2Picker) {
-        return team1A2PickerArr.count + 1;
+        return (int) team1A2PickerArr.count + 1;
     } else if(pickerView == _equipe2GoalPicker) {
-        return team2GPickerArr.count + 1;
+        return (int) team2GPickerArr.count + 1;
     } else if(pickerView == _equipe2Assist1Picker) {
-        return team2A1PickerArr.count + 1;
+        return (int) team2A1PickerArr.count + 1;
     } else if(pickerView == _equipe2Assist2Picker) {
-        return team2A2PickerArr.count + 1;
+        return (int) team2A2PickerArr.count + 1;
     }
     return 1;
 }
