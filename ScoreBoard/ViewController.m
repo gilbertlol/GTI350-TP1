@@ -468,7 +468,7 @@ goalValueChanged:(id)sender {
     if(_equipe2ScoreLbl.text.intValue > _equipe1ScoreLbl.text.intValue ){
         gagnant = 2;
     }
-    
+    int index = 0;
     for(Player* p in team1Players.allValues) {
      /*   if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
             player3 = player2;
@@ -480,9 +480,9 @@ goalValueChanged:(id)sender {
         } else if(player3.getScoreValue < p.getScoreValue) {
             player3 = p;
         }*/
-        [temp setObject:p forKey:[NSString stringWithFormat:p.number.stringValue , @" " , p.equipe]];
+        [temp setObject:p forKey:[NSString stringWithFormat:@"%d", index]];
        
-
+        index++;
         
     }
     
@@ -497,7 +497,9 @@ goalValueChanged:(id)sender {
         } else if(player3.getScoreValue < p.getScoreValue) {
             player3 = p;
         }*/
-        [temp setObject:p forKey:[NSString stringWithFormat:p.number.stringValue , @" " , p.equipe]];
+        [temp setObject:p forKey:[NSString stringWithFormat:@"%d", index]];
+        
+        index++;
     }
     /*trouver le meilleur joueur de la partie dans lequipe gagnante*/
      for(Player* p in temp.allValues) {
