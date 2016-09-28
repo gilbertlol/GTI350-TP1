@@ -33,6 +33,6 @@
 }
 
 -(int)getScoreValue {
-    return (goal * 1) + (assist * 1);
+    return (goal * 2) + (assist * 1);
 }
 @end

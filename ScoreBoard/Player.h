@@ -16,12 +16,14 @@
     NSString* name;
     int goal;
     int assist;
+    int equipe;
 }
 @property(nonatomic, readwrite) NSNumber* number;
 @property(nonatomic, readwrite) NSString* lastName;
 @property(nonatomic, readwrite) NSString* name;
 @property(nonatomic, readwrite) int goal;
 @property(nonatomic, readwrite) int assist;
+@property(nonatomic, readwrite) int equipe;
 
 
 -(NSString*)toPickerString;

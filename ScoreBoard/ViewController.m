@@ -97,6 +97,11 @@ NSMutableArray<Player*>* team2A2PickerArr;
     _logConsoleTxt.text = [_logConsoleTxt.text stringByAppendingString:text];
     
 }
+- (void)logPlayerRemoved:(Player*)player team:(NSString*)team {
+    NSString* text = [NSString stringWithFormat:@"Enlever de : %@ a l'equipe %@.\n", player.name, team];
+    _logConsoleTxt.text = [_logConsoleTxt.text stringByAppendingString:text];
+    
+}
 
 - (void)logGoalScored:(NSString*)scorer assist:(NSString*)assist quarter:(NSString*)quarter team:(NSString*)team {
     if([assist  isEqual: @""]) {
@@ -113,6 +118,7 @@ NSMutableArray<Player*>* team2A2PickerArr;
             Player* player = [[Player alloc] init];
             player.number = [NSNumber numberWithInteger: [_equipe1PlayerNumTxt.text integerValue]];
             player.name = _equipe1PlayerTxt.text;
+            player.equipe = 1;
             NSArray* names = [_equipe1PlayerTxt.text componentsSeparatedByString:@"-"];
             player.lastName = [names objectAtIndex:names.count-1];
             
@@ -137,16 +143,17 @@ NSMutableArray<Player*>* team2A2PickerArr;
         Player* player = [[Player alloc] init];
         player.number = [NSNumber numberWithInteger: [_equipe2PlayerNumTxt.text integerValue]];
         player.name = _equipe2PlayerTxt.text;
+        player.equipe = 2;
         NSArray* names = [_equipe2PlayerTxt.text componentsSeparatedByString:@"-"];
         player.lastName = [names objectAtIndex:names.count-1];
         
         [team2Players setObject:player forKey:_equipe2PlayerNumTxt.text];
         
-        [self logPlayerAdded:player team:@"1"];
+        [self logPlayerAdded:player team:@"2"];
         
         [team2GPickerArr removeAllObjects];
         
-        [team2GPickerArr addObjectsFromArray:team1Players.allValues];
+        [team2GPickerArr addObjectsFromArray:team2Players.allValues];
         
         [self reloadPicker];
         
@@ -166,7 +173,7 @@ NSMutableArray<Player*>* team2A2PickerArr;
         NSString* playerNumber = [[[selectedCell.textLabel.text componentsSeparatedByString:@"-"] objectAtIndex:0] stringByTrimmingCharactersInSet:
                                   [NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        [self logPlayerAdded:[team1Players objectForKey:playerNumber] team:@"1"];
+        [self logPlayerRemoved:[team1Players objectForKey:playerNumber] team:@"1"];
         
         [team1Players removeObjectForKey:playerNumber];
         
@@ -174,11 +181,11 @@ NSMutableArray<Player*>* team2A2PickerArr;
         
         _equip1RemoveBtn.enabled = NO;
     } else {
-        UITableViewCell* selectedCell = [_equipe1Tbl cellForRowAtIndexPath:_equipe1Tbl.indexPathForSelectedRow];
+        UITableViewCell* selectedCell = [_equipe2Tbl cellForRowAtIndexPath:_equipe2Tbl.indexPathForSelectedRow];
         NSString* playerNumber = [[[selectedCell.textLabel.text componentsSeparatedByString:@"-"] objectAtIndex:0] stringByTrimmingCharactersInSet:
                                   [NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        [self logPlayerAdded:[team1Players objectForKey:playerNumber] team:@"1"];
+        [self logPlayerRemoved:[team2Players objectForKey:playerNumber] team:@"2"];
         
         [team2Players removeObjectForKey:playerNumber];
         
@@ -314,13 +321,13 @@ goalValueChanged:(id)sender {
 }
 
 // The number of columns of data
-- (int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return (int) 1;
 }
 
 // The number of rows of data
-- (int)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if(pickerView == _equipe1GoalPicker) {
         return (int) team1GPickerArr.count + 1;
@@ -454,9 +461,16 @@ goalValueChanged:(id)sender {
     Player* player1 = nil;
     Player* player2 = nil;
     Player* player3 = nil;
+    NSInteger gagnant = 1;
+    
+    NSMutableDictionary* temp = [[NSMutableDictionary alloc] init];
+    
+    if(_equipe2ScoreLbl.text.intValue > _equipe1ScoreLbl.text.intValue ){
+        gagnant = 2;
+    }
     
     for(Player* p in team1Players.allValues) {
-        if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
+     /*   if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
             player3 = player2;
             player2 = player1;
             player1 = p;
@@ -465,11 +479,15 @@ goalValueChanged:(id)sender {
             player2 = p;
         } else if(player3.getScoreValue < p.getScoreValue) {
             player3 = p;
-        }
+        }*/
+        [temp setObject:p forKey:[NSString stringWithFormat:p.number.stringValue , @" " , p.equipe]];
+       
+
+        
     }
     
     for(Player* p in team2Players.allValues) {
-        if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
+       /* if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
             player3 = player2;
             player2 = player1;
             player1 = p;
@@ -478,8 +496,31 @@ goalValueChanged:(id)sender {
             player2 = p;
         } else if(player3.getScoreValue < p.getScoreValue) {
             player3 = p;
-        }
+        }*/
+        [temp setObject:p forKey:[NSString stringWithFormat:p.number.stringValue , @" " , p.equipe]];
     }
+    /*trouver le meilleur joueur de la partie dans lequipe gagnante*/
+     for(Player* p in temp.allValues) {
+         if(player1 == nil && p.equipe == gagnant){
+             player1 = p;
+         }else if(player1 != nil){
+            if(player1.getScoreValue < p.getScoreValue && p.equipe == gagnant) {
+                player1 = p;
+            }
+         }
+     }
+    for(Player* p in temp.allValues) {
+        if(player1.number == p.number && player1.equipe== p.equipe){
+        }else if(player2 == nil ){
+            player2 = p;
+        }else if(player2.getScoreValue < p.getScoreValue) {
+             player3 = player2;
+             player2 = p;
+         } else if(player3.getScoreValue < p.getScoreValue) {
+             player3 = p;
+         }
+    }
+    
     
     NSString* star1 = [NSString stringWithFormat:@"1 - %@, %dB %dP", player1.name, player1.goal, player1.assist];
     NSString* star2 = [NSString stringWithFormat:@"2 - %@, %dB %dP", player2.name, player2.goal, player2.assist];
