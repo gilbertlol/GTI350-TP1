@@ -520,6 +520,14 @@ goalValueChanged:(id)sender {
              player2 = p;
          } else if(player3.getScoreValue < p.getScoreValue) {
              player3 = p;
+         }else if(player2.getScoreValue == p.getScoreValue) {
+             if(player2.goal < p.goal){
+                 player2 = p;
+             }
+         }else if(player3.getScoreValue == p.getScoreValue){
+             if(player3.goal < p.goal){
+                 player3 = p;
+             }
          }
     }
     
