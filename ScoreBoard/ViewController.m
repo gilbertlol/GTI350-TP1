@@ -148,6 +148,8 @@ NSMutableArray<Player*>* team2A2PickerArr;
         player.lastName = [names objectAtIndex:names.count-1];
         
         [team2Players setObject:player forKey:_equipe2PlayerNumTxt.text];
+       
+        
         
         [self logPlayerAdded:player team:@"2"];
         
