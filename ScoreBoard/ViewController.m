@@ -54,7 +54,7 @@ NSMutableArray<Player*>* team1A2PickerArr;
 NSMutableArray<Player*>* team2GPickerArr;
 NSMutableArray<Player*>* team2A1PickerArr;
 NSMutableArray<Player*>* team2A2PickerArr;
-
+NSSortDescriptor *valueDescriptor;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -72,6 +72,8 @@ NSMutableArray<Player*>* team2A2PickerArr;
     team2GPickerArr = [[NSMutableArray alloc] init];
     team2A1PickerArr = [[NSMutableArray alloc] init];
     team2A2PickerArr = [[NSMutableArray alloc] init];
+    
+    valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES];
     
     CALayer *layer = _equipe1Tbl.layer;
     [layer setMasksToBounds:YES];
@@ -148,8 +150,6 @@ NSMutableArray<Player*>* team2A2PickerArr;
         player.lastName = [names objectAtIndex:names.count-1];
         
         [team2Players setObject:player forKey:_equipe2PlayerNumTxt.text];
-       
-        
         
         [self logPlayerAdded:player team:@"2"];
         
@@ -178,9 +178,15 @@ NSMutableArray<Player*>* team2A2PickerArr;
         [self logPlayerRemoved:[team1Players objectForKey:playerNumber] team:@"1"];
         
         [team1Players removeObjectForKey:playerNumber];
+
+        [team1GPickerArr removeAllObjects];
+        
+        [team1GPickerArr addObjectsFromArray:team1Players.allValues];
+        
+        [self reloadPicker];
         
         [_equipe1Tbl reloadData];
-        
+
         _equip1RemoveBtn.enabled = NO;
     } else {
         UITableViewCell* selectedCell = [_equipe2Tbl cellForRowAtIndexPath:_equipe2Tbl.indexPathForSelectedRow];
@@ -190,6 +196,12 @@ NSMutableArray<Player*>* team2A2PickerArr;
         [self logPlayerRemoved:[team2Players objectForKey:playerNumber] team:@"2"];
         
         [team2Players removeObjectForKey:playerNumber];
+        
+        [team2GPickerArr removeAllObjects];
+        
+        [team2GPickerArr addObjectsFromArray:team2Players.allValues];
+        
+        [self reloadPicker];
         
         [_equipe2Tbl reloadData];
         
@@ -212,9 +224,9 @@ NSMutableArray<Player*>* team2A2PickerArr;
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     Player* player;
     if (tableView == _equipe1Tbl) {
-        player = [[team1Players allValues] objectAtIndex:indexPath.row];
+        player = [[[team1Players allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:indexPath.row];
     } else {
-        player = [[team2Players allValues] objectAtIndex:indexPath.row];
+        player = [[[team2Players allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:indexPath.row];
     }
     [cell.textLabel setText:[[NSString alloc] initWithFormat:@"%@ - %@", player.number, player.name]];
     [cell.detailTextLabel setText:[[NSString alloc] initWithFormat:@"But : %d Aide : %d", player.goal, player.assist]];
@@ -275,17 +287,17 @@ goalValueChanged:(id)sender {
         int assist1Position = (int) [_equipe1Assist1Picker selectedRowInComponent:0] - 1;
         int assist2Position = (int) [_equipe1Assist2Picker selectedRowInComponent:0] - 1;
 
-        Player* player = [team1Players objectForKey:team1GPickerArr[goalPosition].number.stringValue];
+        Player* player = [team1Players objectForKey:[[team1GPickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:goalPosition].number.stringValue];
         player.goal++;
         NSString* scorerName = player.lastName;
         NSMutableString* assistNames = [[NSMutableString alloc] init];
         if(assist1Position >= 0) {
-            player = [team1Players objectForKey:team1A1PickerArr[assist1Position].number.stringValue];
+            player = [team1Players objectForKey:[[team1A1PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:assist1Position].number.stringValue];
             player.assist++;
             [assistNames appendString:player.name];
         }
         if(assist2Position >= 0) {
-            player = [team1Players objectForKey:team1A2PickerArr[assist2Position].number.stringValue];
+            player = [team1Players objectForKey:[[team1A2PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:assist2Position].number.stringValue];
             player.assist++;
             [assistNames appendFormat:@", %@", player.name];
         }
@@ -298,17 +310,17 @@ goalValueChanged:(id)sender {
         int goalPosition = (int) [_equipe2GoalPicker selectedRowInComponent:0] - 1;
         int assist1Position = (int) [_equipe2Assist1Picker selectedRowInComponent:0] - 1;
         int assist2Position = (int) [_equipe2Assist2Picker selectedRowInComponent:0] - 1;
-        Player* player = [team2Players objectForKey:team2GPickerArr[goalPosition].number.stringValue];
+        Player* player = [team2Players objectForKey:[[team2GPickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:goalPosition].number.stringValue];
         player.goal++;
         NSString* scorerName = player.name;
         NSMutableString* assistNames = [[NSMutableString alloc] init];
         if(assist1Position >= 0) {
-            player = [team2Players objectForKey:team2A1PickerArr[assist1Position].number.stringValue];
+            player = [team2Players objectForKey:[[team2A1PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:assist1Position].number.stringValue];
             player.assist++;
             [assistNames appendString:player.name];
         }
         if(assist2Position >= 0) {
-            player = [team2Players objectForKey:team2A2PickerArr[assist2Position].number.stringValue];
+            player = [team2Players objectForKey:[[team2A2PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:assist2Position].number.stringValue];
             player.assist++;
             [assistNames appendFormat:@", %@", player.name];
         }
@@ -356,34 +368,34 @@ goalValueChanged:(id)sender {
             return @"But";
         }
         _equipe1AddGoalBtn.enabled = YES;
-        return team1GPickerArr[row - 1].toPickerString;
+        return [[team1GPickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1].toPickerString;
     } else if(pickerView == _equipe1Assist1Picker) {
         if(row == 0) {
             return @"Aide";
         }
-        return team1A1PickerArr[row - 1].toPickerString;
+        return [[team1A1PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1].toPickerString;
     } else if(pickerView == _equipe1Assist2Picker) {
         if(row == 0) {
             return @"Aide";
         }
-        return team1A2PickerArr[row - 1].toPickerString;
+        return [[team1A2PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1].toPickerString;
     } else if(pickerView == _equipe2GoalPicker) {
         if(row == 0) {
             _equipe2AddGoalBtn.enabled = NO;
             return @"But";
         }
         _equipe2AddGoalBtn.enabled = YES;
-        return team2GPickerArr[row - 1].toPickerString;
+        return [[team2GPickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1].toPickerString;
     } else if(pickerView == _equipe2Assist1Picker) {
         if(row == 0) {
             return @"Aide";
         }
-        return team2A1PickerArr[row - 1].toPickerString;
+        return [[team2A1PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1].toPickerString;
     } else if(pickerView == _equipe2Assist2Picker) {
         if(row == 0) {
             return @"Aide";
         }
-        return team2A2PickerArr[row - 1].toPickerString;
+        return [[team2A2PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1].toPickerString;
     }
     return nil;
 }
@@ -395,7 +407,7 @@ goalValueChanged:(id)sender {
             [team1A2PickerArr removeAllObjects];
         } else {
             for(Player* player in team1GPickerArr) {
-                if(player != team1GPickerArr[row - 1]) {
+                if(player != [[team1GPickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1]) {
                     [team1A1PickerArr addObject:player];
                 }
             }
@@ -404,7 +416,7 @@ goalValueChanged:(id)sender {
         [team1A2PickerArr removeAllObjects];
         if(row != 0) {
             for(Player* player in team1A1PickerArr) {
-                if(player != team1A1PickerArr[row - 1]) {
+                if(player != [[team1A1PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1]) {
                     [team1A2PickerArr addObject:player];
                 }
             }
@@ -415,7 +427,7 @@ goalValueChanged:(id)sender {
             [team2A2PickerArr removeAllObjects];
         } else {
             for(Player* player in team2GPickerArr) {
-                if(player != team2GPickerArr[row - 1]) {
+                if(player != [[team2GPickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1]) {
                     [team2A1PickerArr addObject:player];
                 }
             }
@@ -424,7 +436,7 @@ goalValueChanged:(id)sender {
         [team2A2PickerArr removeAllObjects];
         if(row != 0) {
             for(Player* player in team2A1PickerArr) {
-                if(player != team2A1PickerArr[row - 1]) {
+                if(player != [[team2A1PickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:row - 1]) {
                     [team2A2PickerArr addObject:player];
                 }
             }
