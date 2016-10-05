@@ -178,7 +178,7 @@ NSSortDescriptor *valueDescriptor;
         [self logPlayerRemoved:[team1Players objectForKey:playerNumber] team:@"1"];
         
         [team1Players removeObjectForKey:playerNumber];
-
+        
         [team1GPickerArr removeAllObjects];
         
         [team1GPickerArr addObjectsFromArray:team1Players.allValues];
@@ -186,7 +186,7 @@ NSSortDescriptor *valueDescriptor;
         [self reloadPicker];
         
         [_equipe1Tbl reloadData];
-
+        
         _equip1RemoveBtn.enabled = NO;
     } else {
         UITableViewCell* selectedCell = [_equipe2Tbl cellForRowAtIndexPath:_equipe2Tbl.indexPathForSelectedRow];
@@ -286,7 +286,7 @@ goalValueChanged:(id)sender {
         int goalPosition = (int) [_equipe1GoalPicker selectedRowInComponent:0] - 1;
         int assist1Position = (int) [_equipe1Assist1Picker selectedRowInComponent:0] - 1;
         int assist2Position = (int) [_equipe1Assist2Picker selectedRowInComponent:0] - 1;
-
+        
         Player* player = [team1Players objectForKey:[[team1GPickerArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:valueDescriptor]] objectAtIndex:goalPosition].number.stringValue];
         player.goal++;
         NSString* scorerName = player.lastName;
@@ -484,65 +484,65 @@ goalValueChanged:(id)sender {
     }
     int index = 0;
     for(Player* p in team1Players.allValues) {
-     /*   if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
-            player3 = player2;
-            player2 = player1;
-            player1 = p;
-        } else if(player2.getScoreValue < p.getScoreValue) {
-            player3 = player2;
-            player2 = p;
-        } else if(player3.getScoreValue < p.getScoreValue) {
-            player3 = p;
-        }*/
+        /*   if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
+         player3 = player2;
+         player2 = player1;
+         player1 = p;
+         } else if(player2.getScoreValue < p.getScoreValue) {
+         player3 = player2;
+         player2 = p;
+         } else if(player3.getScoreValue < p.getScoreValue) {
+         player3 = p;
+         }*/
         [temp setObject:p forKey:[NSString stringWithFormat:@"%d", index]];
-       
+        
         index++;
         
     }
     
     for(Player* p in team2Players.allValues) {
-       /* if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
-            player3 = player2;
-            player2 = player1;
-            player1 = p;
-        } else if(player2.getScoreValue < p.getScoreValue) {
-            player3 = player2;
-            player2 = p;
-        } else if(player3.getScoreValue < p.getScoreValue) {
-            player3 = p;
-        }*/
+        /* if(player1 == nil || player1.getScoreValue < p.getScoreValue) {
+         player3 = player2;
+         player2 = player1;
+         player1 = p;
+         } else if(player2.getScoreValue < p.getScoreValue) {
+         player3 = player2;
+         player2 = p;
+         } else if(player3.getScoreValue < p.getScoreValue) {
+         player3 = p;
+         }*/
         [temp setObject:p forKey:[NSString stringWithFormat:@"%d", index]];
         
         index++;
     }
     /*trouver le meilleur joueur de la partie dans lequipe gagnante*/
-     for(Player* p in temp.allValues) {
-         if(player1 == nil && p.equipe == gagnant){
-             player1 = p;
-         }else if(player1 != nil){
+    for(Player* p in temp.allValues) {
+        if(player1 == nil && p.equipe == gagnant){
+            player1 = p;
+        }else if(player1 != nil){
             if(player1.getScoreValue < p.getScoreValue && p.equipe == gagnant) {
                 player1 = p;
             }
-         }
-     }
+        }
+    }
     for(Player* p in temp.allValues) {
         if(player1.number == p.number && player1.equipe== p.equipe){
         }else if(player2 == nil ){
             player2 = p;
         }else if(player2.getScoreValue < p.getScoreValue) {
-             player3 = player2;
-             player2 = p;
-         } else if(player3.getScoreValue < p.getScoreValue) {
-             player3 = p;
-         }else if(player2.getScoreValue == p.getScoreValue) {
-             if(player2.goal < p.goal){
-                 player2 = p;
-             }
-         }else if(player3.getScoreValue == p.getScoreValue){
-             if(player3.goal < p.goal){
-                 player3 = p;
-             }
-         }
+            player3 = player2;
+            player2 = p;
+        } else if(player3.getScoreValue < p.getScoreValue) {
+            player3 = p;
+        }else if(player2.getScoreValue == p.getScoreValue) {
+            if(player2.goal < p.goal){
+                player2 = p;
+            }
+        }else if(player3.getScoreValue == p.getScoreValue){
+            if(player3.goal < p.goal){
+                player3 = p;
+            }
+        }
     }
     
     
@@ -558,10 +558,15 @@ goalValueChanged:(id)sender {
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Reinitialiser" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self resetGame];
+                                                          }];
     
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
+}
+- (IBAction)reinitializeGame:(id)sender {
+    [self resetGame];
 }
 
 -(void) resetGame {
@@ -577,6 +582,7 @@ goalValueChanged:(id)sender {
     _equipe2Txt.text = @"";
     _equipe2ScoreLbl.text = @"0";
     _equipe2PlayerTxt.text = @"";
+    _logConsoleTxt.text = @"";
     _equipe2PlayerNumTxt.text = @"";
     _equipe2PlayerAddBtn.enabled = NO;
     _equipe2RemoveBtn.enabled = NO;
