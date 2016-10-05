@@ -565,7 +565,15 @@ goalValueChanged:(id)sender {
     [self presentViewController:alert animated:YES completion:nil];
 }
 - (IBAction)reinitializeGame:(id)sender {
-    [self resetGame];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reinitialiser" message:@"Voulez-vous vraiment reinitialiser?" delegate:self cancelButtonTitle:@"Non" otherButtonTitles:@"Oui", nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0){
+    } else if(buttonIndex == 1) {
+        [self resetGame];
+    }
 }
 
 -(void) resetGame {
