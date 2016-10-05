@@ -557,9 +557,8 @@ goalValueChanged:(id)sender {
                                                                    message:starsText
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Reinitialiser" style:UIAlertActionStyleDefault
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
-                                                              [self resetGame];
                                                           }];
     
     [alert addAction:defaultAction];
